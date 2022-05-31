@@ -1,0 +1,22 @@
+{
+    "name": "drupal/opentelemetry",
+    "description": "Provide OpenTelemetry service, based on opentelemetry-php library",
+    "type": "drupal-module",
+    "require": {
+        "http-interop/http-factory-guzzle": "^1.2",
+        "open-telemetry/opentelemetry": "^0.0.11",
+        "php-http/guzzle6-adapter": "^2.0"
+    },
+    "authors": [
+        {
+            "name": "Alexey Murz Korepov",
+            "email": "MurzNN@gmail.com"
+        }
+    ],
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/opentelemetry",
+        "source": "https://git.drupalcode.org/project/opentelemetry"
+    },
+    "license": "GPL-2.0-or-later",
+    "minimum-stability": "dev"
+}
