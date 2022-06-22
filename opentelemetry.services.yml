@@ -2,3 +2,11 @@ services:
   opentelemetry:
     class: Drupal\opentelemetry\OpenTelemetryService
     arguments: ["@config.factory", "@request_stack"]
+  http_middleware.opentelemetry:
+    class: Drupal\opentelemetry\StackMiddleware\TelemetryMiddleware
+    tags:
+      - { name: http_middleware, priority: -100 }
+  opentelemetry.listener:
+    class: Drupal\opentelemetry\EventSubscriber\OpenTelemetryInitEventSubscriber
+    tags:
+      - { name: event_subscriber }
