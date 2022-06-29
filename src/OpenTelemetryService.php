@@ -9,9 +9,9 @@ use Drupal\opentelemetry\Exporter\DummyExporter;
 use OpenTelemetry\API\Trace\SpanKind;
 use OpenTelemetry\Context\Context;
 use OpenTelemetry\Contrib\Jaeger\AgentExporter;
-use OpenTelemetry\Sdk\Trace\Sampler\AlwaysOnSampler;
-use OpenTelemetry\Sdk\Trace\SpanProcessor\BatchSpanProcessor;
-use OpenTelemetry\Sdk\Trace\TracerProvider;
+use OpenTelemetry\SDK\Trace\Sampler\AlwaysOnSampler;
+use OpenTelemetry\SDK\Trace\SpanProcessor\BatchSpanProcessor;
+use OpenTelemetry\SDK\Trace\TracerProvider;
 
 /**
  * The service to get a opentelemetry tracer.
@@ -23,7 +23,7 @@ class OpenTelemetryService {
   /**
    * The sampler.
    *
-   * @var \OpenTelemetry\Sdk\Trace\SamplerInterface
+   * @var \OpenTelemetry\SDK\Trace\SamplerInterface
    */
   protected $sampler;
 
