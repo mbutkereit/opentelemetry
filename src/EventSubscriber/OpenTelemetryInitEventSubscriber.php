@@ -2,6 +2,7 @@
 
 namespace Drupal\opentelemetry\EventSubscriber;
 
+use Drupal\Core\Database\Database;
 use Drupal\Core\Routing\RouteMatch;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
@@ -59,7 +60,24 @@ class OpenTelemetryInitEventSubscriber implements EventSubscriberInterface {
   public function onKernelFinishRequest(FinishRequestEvent $event) :void {
     // @todo handle sub request.
     if (!empty($this->span)) {
+      $logs = Database::getLog('monitor_mysql');
+      foreach ($logs as $log) {
+        if ($log['time'] > 2) {
+          \Drupal::logger('db')
+            ->critical(sprintf('Slow query %s', $log['query']));
+
+          $this->span->addEvent(
+            sprintf('Slow query %s', $log['query']),
+            [
+              'caller' => $log['caller'],
+              'args' => $log['args'],
+            ]
+          );
+        }
+      }
+      $this->span->setAttribute('Database Query Count', count($logs));
       $this->span->end();
+
     }
   }
 
@@ -84,6 +102,7 @@ class OpenTelemetryInitEventSubscriber implements EventSubscriberInterface {
         // 'parameters' => $route->getParameters()->all(),
       ]);
 
+    Database::startLog('monitor_mysql');
   }
 
   /**
