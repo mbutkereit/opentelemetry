@@ -9,6 +9,8 @@ use Drupal\opentelemetry\Exporter\DummyExporter;
 use OpenTelemetry\API\Trace\SpanKind;
 use OpenTelemetry\Context\Context;
 use OpenTelemetry\Contrib\Jaeger\AgentExporter;
+use OpenTelemetry\SDK\Common\Attribute\Attributes;
+use OpenTelemetry\SDK\Common\Time\ClockFactory;
 use OpenTelemetry\SDK\Trace\Sampler\AlwaysOnSampler;
 use OpenTelemetry\SDK\Trace\SpanProcessor\BatchSpanProcessor;
 use OpenTelemetry\SDK\Trace\TracerProvider;
@@ -70,7 +72,9 @@ class OpenTelemetryService {
       Context::getCurrent(),
       $samplerUniqueId,
       'io.opentelemetry.drupal',
-      SpanKind::KIND_INTERNAL
+      SpanKind::KIND_INTERNAL,
+      Attributes::create([]),
+      []
     );
 
     $url_jaeger = getenv('OTEL_EXPORTER_JAEGER_AGENT_HOST') ? getenv('OTEL_EXPORTER_JAEGER_AGENT_HOST') : 'jaeger';
@@ -113,7 +117,7 @@ class OpenTelemetryService {
    */
   public function createTracer() {
     $traceProvider = new TracerProvider(
-      new BatchSpanProcessor($this->exporter),
+      new BatchSpanProcessor($this->exporter, ClockFactory::create()->build()),
       $this->sampler
     );
 
