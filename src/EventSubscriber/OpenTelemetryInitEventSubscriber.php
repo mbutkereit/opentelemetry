@@ -75,7 +75,9 @@ class OpenTelemetryInitEventSubscriber implements EventSubscriberInterface {
           );
         }
       }
-      $this->span->setAttribute('Database Query Count', count($logs));
+      if (is_array($logs)) {
+        $this->span->setAttribute('Database Query Count', count($logs));
+      }
       $this->span->end();
 
     }
