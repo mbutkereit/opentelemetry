@@ -4,8 +4,7 @@
     "type": "drupal-module",
     "require": {
         "http-interop/http-factory-guzzle": "^1.2",
-        "open-telemetry/opentelemetry": "0.0.17",
-        "php-http/guzzle6-adapter": "^2.0"
+        "open-telemetry/opentelemetry": "0.0.17"
     },
     "authors": [
         {
