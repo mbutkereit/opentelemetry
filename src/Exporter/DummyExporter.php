@@ -29,7 +29,7 @@ class DummyExporter implements SpanExporterInterface {
   /**
    * {@inheritDoc}
    */
-  public function doExport(iterable $spans): int {
+  public function doExport(iterable $spans): bool {
     return SpanExporterInterface::STATUS_SUCCESS;
   }
 
