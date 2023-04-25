@@ -4,7 +4,11 @@
     "type": "drupal-module",
     "require": {
         "http-interop/http-factory-guzzle": "^1.2",
-        "open-telemetry/opentelemetry": "0.0.17"
+        "nyholm/psr7": "^1.5",
+        "open-telemetry/api": "^1-beta",
+        "open-telemetry/context": "^1-beta",
+        "open-telemetry/sdk": "^1-beta",
+        "open-telemetry/exporter-otlp": "^1-beta"
     },
     "authors": [
         {
