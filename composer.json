@@ -3,6 +3,7 @@
     "description": "Provide OpenTelemetry service, based on opentelemetry-php library",
     "type": "drupal-module",
     "require": {
+        "google/protobuf": "^3.22",
         "http-interop/http-factory-guzzle": "^1.2",
         "nyholm/psr7": "^1.5",
         "open-telemetry/api": "^1-beta",

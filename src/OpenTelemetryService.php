@@ -8,7 +8,8 @@ use Drupal\opentelemetry\Exporter\DummyExporter;
 
 use OpenTelemetry\API\Trace\SpanKind;
 use OpenTelemetry\Context\Context;
-use OpenTelemetry\Contrib\Jaeger\AgentExporter;
+use OpenTelemetry\Contrib\Otlp\ProtobufSerializer;
+use OpenTelemetry\Contrib\OtlpHttp\Exporter;
 use OpenTelemetry\SDK\Common\Attribute\Attributes;
 use OpenTelemetry\SDK\Common\Time\ClockFactory;
 use OpenTelemetry\SDK\Trace\Sampler\AlwaysOnSampler;
@@ -77,8 +78,7 @@ class OpenTelemetryService {
       []
     );
 
-    $url_jaeger = getenv('OTEL_EXPORTER_JAEGER_AGENT_HOST') ? getenv('OTEL_EXPORTER_JAEGER_AGENT_HOST') : 'jaeger';
-    $port_jaeger = getenv('OTEL_EXPORTER_JAEGER_AGENT_PORT') ? getenv('OTEL_EXPORTER_JAEGER_AGENT_PORT') : '6831';
+    $endpoint_otlp = getenv('OTEL_EXPORTER_OTLP_ENDPOINT') ? getenv('OTEL_EXPORTER_OTLP_ENDPOINT') : 'http://collector:4318';
 
     $disable_otel = getenv('OTEL_EXPORTER_DISABLE');
     $enabled = $configFactory->get('opentelemetry.settings')
@@ -94,12 +94,13 @@ class OpenTelemetryService {
     }
 
     $type = $configFactory->get('opentelemetry.settings')
-      ->get('type') ?? 'jaeger_udp';
+      ->get('type') ?? 'otlp';
 
     switch ($type) {
-      case 'jaeger_udp':
+      case 'otlp':
       default:
-        $exporter = new AgentExporter($serviceName, $url_jaeger . ':' . $port_jaeger);
+      $transport = (new \OpenTelemetry\Contrib\Otlp\OtlpHttpTransportFactory())->create($endpoint_otlp,'application/json');
+      $exporter = new \OpenTelemetry\Contrib\Otlp\SpanExporter($transport);
     }
 
     if ($enabled === FALSE) {
