@@ -8,8 +8,8 @@ use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FinishRequestEvent;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
@@ -86,10 +86,10 @@ class OpenTelemetryInitEventSubscriber implements EventSubscriberInterface {
   /**
    * Handle the onKernelRequest event.
    *
-   * @param \Symfony\Component\HttpKernel\Event\GetResponseEvent $event
+   * @param \Symfony\Component\HttpKernel\Event\RequestEvent $event
    *   The console command event.
    */
-  public function onKernelRequest(GetResponseEvent $event) :void {
+  public function onKernelRequest(RequestEvent $event) :void {
     /** @var \OpenTelemetry\SDK\Trace\Tracer $tracer */
     $tracer = \Drupal::service('opentelemetry')->createTracer();
     $route = RouteMatch::createFromRequest($event->getRequest());
@@ -113,7 +113,7 @@ class OpenTelemetryInitEventSubscriber implements EventSubscriberInterface {
    * @param \Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent $event
    *   The console command event.
    */
-  public function onKernelException(GetResponseForExceptionEvent $event) :void {
+  public function onKernelException(ExceptionEvent $event) :void {
     if (!empty($this->span)) {
       $this->span->end();
     }

@@ -3,7 +3,7 @@
 namespace Drupal\opentelemetry;
 
 use Drupal\Core\Config\ConfigFactory;
-use Drupal\Core\Http\RequestStack;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Drupal\opentelemetry\Exporter\DummyExporter;
 
 use OpenTelemetry\API\Trace\SpanKind;
@@ -56,7 +56,7 @@ class OpenTelemetryService {
    *
    * @param \Drupal\Core\Config\ConfigFactory $configFactory
    *   Drupal config factory.
-   * @param \Drupal\Core\Http\RequestStack $requestStack
+   * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
    *   The request stack.
    */
   public function __construct(ConfigFactory $configFactory, RequestStack $requestStack) {

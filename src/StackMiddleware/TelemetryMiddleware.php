@@ -39,7 +39,7 @@ class TelemetryMiddleware implements HttpKernelInterface, TerminableInterface {
   /**
    * {@inheritDoc}
    */
-  public function handle(Request $request, $type = self::MAIN_REQUEST, $catch = TRUE) {
+  public function handle(Request $request, $type = self::MAIN_REQUEST, $catch = TRUE): Response {
     /** @var \OpenTelemetry\SDK\Trace\Tracer $tracer */
     $tracer = \Drupal::service('opentelemetry')->createTracer();
 
